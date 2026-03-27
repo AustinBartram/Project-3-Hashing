@@ -18,7 +18,6 @@ public class HashtableExperiment {
 
         int n = (int) Math.ceil(loadFactor * m);
 
-        // ✅ FIX: updated constructors
         LinearProbing linear = new LinearProbing(m, loadFactor);
         DoubleHashing doubling = new DoubleHashing(m, loadFactor);
 
@@ -40,7 +39,7 @@ public class HashtableExperiment {
         } else {
             try {
                 Scanner scan = new Scanner(new java.io.File("word-list.txt"));
-                while (scan.hasNextLine() && data.size() < n) {
+                while (scan.hasNextLine()) {
                     data.add(scan.nextLine());
                 }
                 scan.close();
@@ -50,24 +49,37 @@ public class HashtableExperiment {
             }
         }
 
-        // insert into both tables
+        /**
+         * Inserts the keys from the data source into both the linear probing and double hashing hash tables.
+         * The loop continues until the number of unique keys inserted into the linear probing hash table reaches n.
+         */
+        int total = 0;
+
         for (Object key : data) {
+            if (linear.getCount() >= n) break;
+
             linear.insert(key);
             doubling.insert(key);
+            total++;
         }
 
-        // input label
+        /**
+         * Prints the results of the experiment, including the type of data source used, the load factor,
+         * the size of the hash table, the number of elements inserted, the number of duplicates, and the average
+         * number of probes for both linear probing and double hashing. The output is formatted to match the 
+         * assignment specifications, with the data source type, and load factor.
+         */
         String type;
         if (dataSource == 1) type = "Random Numbers";
         else if (dataSource == 2) type = "Dates";
         else type = "Word-List";
 
-        System.out.println("HashtableExperiment: Input: " + type +
-                "   Loadfactor: " + String.format("%.2f", loadFactor));
+        System.out.println("HashtableExperiment: Input: " + type + "   Loadfactor: " + String.format("%.2f", loadFactor));
 
-        int total = data.size();
-
-        // ----- Linear Probing -----
+        /**
+         * Prints the results for linear probing, including the size of the hash table, the number of elements inserted,
+         * the number of duplicates, and the average number of probes. The output is formatted to match the assignment specifications.
+         */
         System.out.println();
         System.out.println("\tUsing Linear Probing");
 
@@ -79,7 +91,10 @@ public class HashtableExperiment {
         System.out.println("\tInserted " + total + " elements, of which " + duplicateLinear + " were duplicates");
         System.out.println("\tAvg. no. of probes = " + String.format("%.2f", avgLinear));
 
-        // ----- Double Hashing -----
+        /**
+         * Prints the results for double hashing, including the size of the hash table, the number of elements inserted,
+         * the number of duplicates, and the average number of probes. The output is formatted to match the assignment specifications.
+         */
         System.out.println();
         System.out.println("\tUsing Double Hashing");
 
@@ -91,10 +106,15 @@ public class HashtableExperiment {
         System.out.println("\tInserted " + total + " elements, of which " + duplicateDouble + " were duplicates");
         System.out.println("\tAvg. no. of probes = " + String.format("%.2f", avgDouble));
 
-        // debug levels
+        /**
+         * Prints debug information based on the specified debug level. If the debug level is 1, it indicates that 
+         * the dump of the hash table is disabled. If the debug level is 2, it prints the keys that were inserted into the hash table. 
+         * The output is formatted to match the assignment specifications.
+         */
         if (debugLevel == 1) {
-            System.out.println("Debug level 1: dump disabled");
-
+            linear.dumpToFile("linear-dump.txt");
+            doubling.dumpToFile("double-dump.txt");
+            System.out.println("HashtableExperiment: Saved dump of hash table");
         } else if (debugLevel == 2) {
             System.out.println();
             System.out.println("Debug level 2: printing inserts");
