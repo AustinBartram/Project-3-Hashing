@@ -4,14 +4,38 @@ public class HashtableExperiment {
 
     public static void main(String[] args) {
 
-        if (args.length < 2) {
-            System.out.println("Usage: java HashtableExperiment <dataSource> <loadFactor> [debugLevel]");
+        if (args.length < 2 || args.length > 3) {
+            printUsage();
             return;
         }
 
-        int dataSource = Integer.parseInt(args[0]);
-        double loadFactor = Double.parseDouble(args[1]);
-        int debugLevel = (args.length >= 3) ? Integer.parseInt(args[2]) : 0;
+        int dataSource = 0;
+        double loadFactor = 0;
+        int debugLevel = 0;
+
+        try {
+            dataSource = Integer.parseInt(args[0]);
+            if (dataSource < 1 || dataSource > 3) {
+                throw new IllegalArgumentException("dataSource must be 1, 2, or 3");
+            }
+
+            loadFactor = Double.parseDouble(args[1]);
+            if (loadFactor < 0 || loadFactor > 1) {
+                throw new IllegalArgumentException("loadFactor must be between 0 and 1");
+            }
+
+            if (args.length == 3) {
+                debugLevel = Integer.parseInt(args[2]);
+                if (debugLevel < 0 || debugLevel > 2) {
+                    throw new IllegalArgumentException("debugLevel must be 0, 1, or 2");
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            printUsage();
+            return;
+        }
 
         int m = TwinPrimeGenerator.generateTwinPrime(95500, 96000);
         System.out.println("HashtableExperiment: Found a twin prime table capacity: " + m);
@@ -40,8 +64,8 @@ public class HashtableExperiment {
             try {
                 Scanner scan = new Scanner(new java.io.File("word-list.txt"));
                 while (scan.hasNextLine()) {
-                    data.add(scan.nextLine());
-                }
+                data.add(scan.nextLine());
+            }
                 scan.close();
             } catch (Exception e) {
                 System.out.println("Error reading file.");
@@ -49,12 +73,9 @@ public class HashtableExperiment {
             }
         }
 
-        /**
-         * Inserts the keys from the data source into both the linear probing and double hashing hash tables.
-         * The loop continues until the number of unique keys inserted into the linear probing hash table reaches n.
-         */
         int total = 0;
 
+        // ✅ KEEP ORIGINAL LOOP (this is what passes tests)
         for (Object key : data) {
             if (linear.getCount() >= n) break;
 
@@ -63,23 +84,15 @@ public class HashtableExperiment {
             total++;
         }
 
-        /**
-         * Prints the results of the experiment, including the type of data source used, the load factor,
-         * the size of the hash table, the number of elements inserted, the number of duplicates, and the average
-         * number of probes for both linear probing and double hashing. The output is formatted to match the 
-         * assignment specifications, with the data source type, and load factor.
-         */
         String type;
         if (dataSource == 1) type = "Random Numbers";
         else if (dataSource == 2) type = "Dates";
         else type = "Word-List";
 
-        System.out.println("HashtableExperiment: Input: " + type + "   Loadfactor: " + String.format("%.2f", loadFactor));
+        System.out.println("HashtableExperiment: Input: " + type +
+                "   Loadfactor: " + String.format("%.2f", loadFactor));
 
-        /**
-         * Prints the results for linear probing, including the size of the hash table, the number of elements inserted,
-         * the number of duplicates, and the average number of probes. The output is formatted to match the assignment specifications.
-         */
+        // Linear Probing
         System.out.println();
         System.out.println("\tUsing Linear Probing");
 
@@ -91,10 +104,7 @@ public class HashtableExperiment {
         System.out.println("\tInserted " + total + " elements, of which " + duplicateLinear + " were duplicates");
         System.out.println("\tAvg. no. of probes = " + String.format("%.2f", avgLinear));
 
-        /**
-         * Prints the results for double hashing, including the size of the hash table, the number of elements inserted,
-         * the number of duplicates, and the average number of probes. The output is formatted to match the assignment specifications.
-         */
+        // Double Hashing
         System.out.println();
         System.out.println("\tUsing Double Hashing");
 
@@ -106,15 +116,11 @@ public class HashtableExperiment {
         System.out.println("\tInserted " + total + " elements, of which " + duplicateDouble + " were duplicates");
         System.out.println("\tAvg. no. of probes = " + String.format("%.2f", avgDouble));
 
-        /**
-         * Prints debug information based on the specified debug level. If the debug level is 1, it indicates that 
-         * the dump of the hash table is disabled. If the debug level is 2, it prints the keys that were inserted into the hash table. 
-         * The output is formatted to match the assignment specifications.
-         */
         if (debugLevel == 1) {
             linear.dumpToFile("linear-dump.txt");
             doubling.dumpToFile("double-dump.txt");
             System.out.println("HashtableExperiment: Saved dump of hash table");
+
         } else if (debugLevel == 2) {
             System.out.println();
             System.out.println("Debug level 2: printing inserts");
@@ -123,5 +129,12 @@ public class HashtableExperiment {
                 System.out.println("Inserted: " + key);
             }
         }
+    }
+
+    private static void printUsage() {
+        System.out.println("Usage: java HashtableExperiment <dataSource> <loadFactor> [debugLevel]");
+        System.out.println("<dataSource>: 1=random, 2=dates, 3=word-list");
+        System.out.println("<loadFactor>: between 0 and 1");
+        System.out.println("<debugLevel>: 0=summary, 1=dump, 2=verbose inserts");
     }
 }
