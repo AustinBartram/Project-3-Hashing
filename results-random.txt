@@ -11,7 +11,7 @@ HashtableExperiment: size of hash table is 47896
 	Using Double Hashing
 HashtableExperiment: size of hash table is 47896
 	Inserted 47896 elements, of which 0 were duplicates
-	Avg. no. of probes = 1.38
+	Avg. no. of probes = 1.39
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
@@ -50,12 +50,12 @@ HashtableExperiment: Input: Random Numbers   Loadfactor: 0.80
 
 	Using Linear Probing
 HashtableExperiment: size of hash table is 76633
-	Inserted 76633 elements, of which 1 were duplicates
-	Avg. no. of probes = 2.94
+	Inserted 76633 elements, of which 0 were duplicates
+	Avg. no. of probes = 3.03
 
 	Using Double Hashing
 HashtableExperiment: size of hash table is 76633
-	Inserted 76633 elements, of which 1 were duplicates
+	Inserted 76633 elements, of which 0 were duplicates
 	Avg. no. of probes = 2.01
 --------------------------------------------------------------------------------
 
@@ -66,12 +66,12 @@ HashtableExperiment: Input: Random Numbers   Loadfactor: 0.90
 	Using Linear Probing
 HashtableExperiment: size of hash table is 86212
 	Inserted 86212 elements, of which 2 were duplicates
-	Avg. no. of probes = 5.42
+	Avg. no. of probes = 5.38
 
 	Using Double Hashing
 HashtableExperiment: size of hash table is 86212
 	Inserted 86212 elements, of which 2 were duplicates
-	Avg. no. of probes = 2.55
+	Avg. no. of probes = 2.56
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
@@ -80,12 +80,12 @@ HashtableExperiment: Input: Random Numbers   Loadfactor: 0.95
 
 	Using Linear Probing
 HashtableExperiment: size of hash table is 91002
-	Inserted 91002 elements, of which 3 were duplicates
-	Avg. no. of probes = 10.09
+	Inserted 91002 elements, of which 1 were duplicates
+	Avg. no. of probes = 10.77
 
 	Using Double Hashing
 HashtableExperiment: size of hash table is 91002
-	Inserted 91002 elements, of which 3 were duplicates
+	Inserted 91002 elements, of which 1 were duplicates
 	Avg. no. of probes = 3.12
 --------------------------------------------------------------------------------
 
@@ -96,11 +96,11 @@ HashtableExperiment: Input: Random Numbers   Loadfactor: 0.99
 	Using Linear Probing
 HashtableExperiment: size of hash table is 94834
 	Inserted 94834 elements, of which 2 were duplicates
-	Avg. no. of probes = 44.46
+	Avg. no. of probes = 34.79
 
 	Using Double Hashing
 HashtableExperiment: size of hash table is 94834
 	Inserted 94834 elements, of which 2 were duplicates
-	Avg. no. of probes = 4.63
+	Avg. no. of probes = 4.65
 --------------------------------------------------------------------------------
 

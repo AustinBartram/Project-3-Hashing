@@ -11,7 +11,7 @@ HashtableExperiment: size of hash table is 47896
 	Using Double Hashing
 HashtableExperiment: size of hash table is 47896
 	Inserted 47896 elements, of which 0 were duplicates
-	Avg. no. of probes = 1.26
+	Avg. no. of probes = 1.29
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
@@ -26,7 +26,7 @@ HashtableExperiment: size of hash table is 57475
 	Using Double Hashing
 HashtableExperiment: size of hash table is 57475
 	Inserted 57475 elements, of which 0 were duplicates
-	Avg. no. of probes = 1.50
+	Avg. no. of probes = 1.49
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
@@ -56,7 +56,7 @@ HashtableExperiment: size of hash table is 76633
 	Using Double Hashing
 HashtableExperiment: size of hash table is 76633
 	Inserted 76633 elements, of which 0 were duplicates
-	Avg. no. of probes = 2.16
+	Avg. no. of probes = 2.23
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
@@ -71,7 +71,7 @@ HashtableExperiment: size of hash table is 86212
 	Using Double Hashing
 HashtableExperiment: size of hash table is 86212
 	Inserted 86212 elements, of which 0 were duplicates
-	Avg. no. of probes = 2.98
+	Avg. no. of probes = 2.96
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
@@ -101,6 +101,6 @@ HashtableExperiment: size of hash table is 94834
 	Using Double Hashing
 HashtableExperiment: size of hash table is 94834
 	Inserted 94834 elements, of which 0 were duplicates
-	Avg. no. of probes = 5.31
+	Avg. no. of probes = 5.30
 --------------------------------------------------------------------------------
 
