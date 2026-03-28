@@ -1,32 +1,25 @@
 /**
- * DoubleHashing.java - Implements double hashing for collision resolution in a hash table.
- * This class extends the abstract Hashtable class and provides a specific implementation
- * of the hash function using two hash functions (h1 and h2) to calculate the index for a
- * given key and probe number. The first hash function (h1) is based on the key's hash
- * code and the table's capacity, while the second hash function (h2) is designed to ensure
- * that it is non-zero.
- * 
- * Author: Austin Bartram
+ * This is the DoubleHashing class that extends the Hashtable class. It implements the double 
+ * hashing collision resolution strategy. Double hashing uses two hash functions to calculate the 
+ * index for a key.
+ * @author Austin Bartram
  */
 public class DoubleHashing extends Hashtable {
 
     /**
-     * Constructor for DoubleHashing class. Initializes the hash table with the specified capacity
-     * and load factor.
-     * @param capacity
-     * @param loadFactor
+     * Constructor that initializes the hash table with the given capacity and load factor.
+     * @param capacity the size of the hash table
+     * @param loadFactor the load factor for resizing the hash table
      */
     public DoubleHashing(int capacity, double loadFactor) {
         super(capacity, loadFactor);
     }
 
     /**
-     * Implements the double hashing function to calculate the index for a given key and probe number.
-     * The first hash function (h1) is based on the key's hash code and the table's capacity,
-     *  while the second hash function (h2) is designed to ensure that it is non-zero.
-     * @param key The key for which the index is to be calculated.
-     * @param i The probe number, which is used to calculate the index in case of collisions.
-     * @return The calculated index for the given key and probe number.
+     * This is the double hashing function. It takes in the key and the probe number and returns the index.
+     * @param key the key to be inserted
+     * @param i the probe number (starts at 0 and increments for each probe)
+     * @return the index to insert the key into the hash table
      */
     @Override
     protected int h(Object key, int i) {

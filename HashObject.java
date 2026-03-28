@@ -1,19 +1,20 @@
 /**
- * HashObject.java - Represents an object stored in the hash table,
- * containing the key, frequency of occurrences, and the number of probes required to insert it.
- * This class provides methods to access the key, increment the frequency, and set and get the probe count.
- * Author: Austin Bartram
+ * This is the HashObject class that represents an object stored in the hash table. 
+ * It contains the key, frequency, and probe count for each object. The frequency is 
+ * used to keep track of how many times a duplicate key has been inserted into the hash table. 
+ * The probe count is used to keep track of how many probes it took to insert the object into the hash table.
+ * @author Austin Bartram
  */
 public class HashObject {
-    
+
     private Object key;
     private int frequency;
     private int probeCount;
 
     /**
-     * Constructor for HashObject class. Initializes the key, frequency, and probe count.
-     * @param key The key to be stored in the hash table.
-     * The frequency is initialized to 1, and the probe count is initialized to 0.
+     * Constructor that initializes the key, frequency, and probe count. 
+     * Frequency starts at 1 since the object is being inserted for the first time.
+     * @param key the key to be stored in the hash table
      */
     public HashObject(Object key) {
         this.key = key;
@@ -22,43 +23,44 @@ public class HashObject {
     }
 
     /**
-     * Returns the key stored in this HashObject.
-     * @return
+     * Returns the key
      */
     public Object getKey() {
         return key;
     }
 
     /**
-     * Increments the frequency of occurrences for this key. This method should be called when a
-     * duplicate key is inserted into the hash table.
+     * Increments duplicate count
      */
     public void incrementFrequency() {
         frequency++;
     }
 
     /**
-     * Sets the probe count for this HashObject. This method should be called when the object is inserted
-     * into the hash table to record the number of probes required for the insertion.
-     * @param probeCount
+     * Returns frequency
+     */
+    public int getFrequency() {
+        return frequency;
+    }
+
+    /**
+     * Sets probe count 
      */
     public void setProbeCount(int probeCount) {
         this.probeCount = probeCount;
     }
 
     /**
-     * Returns the number of probes required to insert this key into the hash table.
-     * This value is set when the object is inserted.
-     * @return The probe count for this HashObject.
+     * Gets probe count 
      */
     public int getProbeCount() {
         return probeCount;
     }
 
     /**
-     * Overrides the equals method to compare HashObjects based on their keys.
-     * Two HashObjects are considered equal if their keys are equal. 
-     * @param obj The object that is being compared for equality with this HashObject.
+     * Equality based on keys. Two HashObjects are equal if their keys are equal.
+     * @param obj the object to compare with
+     * @return true if the keys are equal, false otherwise
      */
     @Override
     public boolean equals(Object obj) {
@@ -66,13 +68,11 @@ public class HashObject {
         if (obj == null || getClass() != obj.getClass()) return false;
 
         HashObject other = (HashObject) obj;
-        return this.key.equals(other.key);
+        return key.equals(other.key);
     }
 
     /**
-     * Overrides the toString method to provide a string representation of the HashObject, 
-     * including the key, frequency, and probe count.
-     * @return A string representation of the HashObject in the format "key frequency probeCount".
+     * String representation for the hash table. 
      */
     @Override
     public String toString() {

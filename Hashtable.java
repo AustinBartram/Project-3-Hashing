@@ -1,10 +1,14 @@
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 /**
- * Abstract class representing a hash table. It provides the basic structure and common 
- * methods for hash tables, including insertion and searching of keys, as well as counting
- * the total number of probes.
- * Author: Austin Bartram
+ * This is the abstract class for the hash table. It contains the common methods and 
+ * variables for both linear probing and double hashing. It also contains the insert method
+ * that is used to insert keys into the hash table. The insert method also keeps track of the 
+ * number of probes and duplicates for each key. The search method is used for debugging.
+ *  The dumpToFile method is used to dump the contents of the hash table to a file for 
+ * debugging.
+ * @author Austin Bartram
  */
 public abstract class Hashtable {
 
@@ -13,28 +17,25 @@ public abstract class Hashtable {
     protected double loadFactor;
     protected int count;
     protected int totalProbeCount;
+    protected int totalDuplicates;
 
     /**
-     * Constructor for the Hashtable class. Initializes the hash table with the specified capacity 
-     * and load factor.
-     * @param capacity The size of the hash table.
-     * @param loadFactor The load factor that determines when the hash table should be resized.
+     * Constructor for hash table that initializes the table and sets the capacity and load factor.
+     * @param capacity initial capacity of the hash table (should be a prime number)
+     * @param loadFactor maximum load factor before insertions fail
      */
     public Hashtable(int capacity, double loadFactor) {
         this.capacity = capacity;
         this.loadFactor = loadFactor;
         this.table = new HashObject[capacity];
+
         this.count = 0;
         this.totalProbeCount = 0;
+        this.totalDuplicates = 0;
     }
 
     /**
-     * Helper method to compute the positive modulus of a dividend and divisor. This is used to ensure
-     * that the result of the modulus operation is always non-negative, which is important for calculating
-     * hash quotients in the hash table.
-     * @param dividend
-     * @param divisor
-     * @return The positive modulus of the dividend and divisor.
+     * Ensures positive modulus (handles negative hash codes)
      */
     protected int positiveMod(int dividend, int divisor) {
         int quotient = dividend % divisor;
@@ -44,51 +45,46 @@ public abstract class Hashtable {
     }
 
     /**
-     * Abstract method to calculate the index for a given key and probe number.
-     * @param key
-     * @param probe
-     * @return
+     * Abstract hash function to be implemented by subclasses. Takes in key and probe number.
      */
-    protected abstract int h(Object key, int probe);
+    protected abstract int h(Object key, int i);
 
     /**
-     * Inserts a key into the hash table. This method uses the hash function defined by the subclass
-     * to determine the index for the key and handles collisions according to the specific collision
-     * resolution strategy implemented by the subclass.
-     * @param key The key to be inserted into the hash table.
+     * Insert method for hash table. Returns index of inserted key or -1 if insertion fails
+     * (should not happen if load factor is respected).
      */
-    public void insert(Object key) {
-
+    public int insert(Object key) {
         int i = 0;
-        int probeCountForThisInsert = 0;
+        int probeCount = 0;
 
         while (i < capacity) {
             int index = h(key, i);
-            probeCountForThisInsert++;
+            probeCount++;
 
             if (table[index] == null) {
                 HashObject obj = new HashObject(key);
-                obj.setProbeCount(probeCountForThisInsert);
+                obj.setProbeCount(probeCount);
 
                 table[index] = obj;
                 count++;
-                totalProbeCount += probeCountForThisInsert;
-                return;
+                totalProbeCount += probeCount;
+
+                return index;
 
             } else if (table[index].getKey().equals(key)) {
                 table[index].incrementFrequency();
-                return;
+                totalDuplicates++;
+                return index;
             }
 
             i++;
         }
+        return -1;
     }
 
     /**
-     * Searches for a key in the hash table and returns the corresponding HashObject if found,
-     * or null if not found.
+     * Search method (used for debugging)
      * @param key
-     * @return The HashObject associated with the key if found, or null if the key is not in the hash table.
      */
     public HashObject search(Object key) {
         int i = 0;
@@ -98,7 +94,9 @@ public abstract class Hashtable {
 
             if (table[index] == null) {
                 return null;
-            } else if (table[index].getKey().equals(key)) {
+            }
+
+            if (table[index].getKey().equals(key)) {
                 return table[index];
             }
 
@@ -109,40 +107,50 @@ public abstract class Hashtable {
     }
 
     /**
-     * Returns the total number of probes that have been made during insertions into the hash table.
-     * @return The total probe count for all insertions into the hash table.
-     */
-    public int getTotalProbeCount() {
-        return totalProbeCount;
-    }
-
-    /**
-     * Returns the number of keys currently stored in the hash table.
-     * @return The count of keys currently stored in the hash table.
+     * gets the number of unique keys in the hash table
      */
     public int getCount() {
         return count;
     }
 
     /**
-     * Dumps the contents of the hash table to a file. Each line in the output file will contain the index
-     * of the hash table and the corresponding HashObject (key, frequency, probe count).
-     * @param fileName
-     * @throws Exception
+     * gets the total number of duplicates found in the hash table
+     */
+    public int getTotalDuplicates() {
+        return totalDuplicates;
+    }
+
+    /**
+     * Gets the total number of probes for successful inserts
+     */
+    public int getTotalProbeCount() {
+        return totalProbeCount;
+    }
+
+    /**
+     * Get average number of probes per successful insert
+     */
+    public double getAverageProbes() {
+        return (double) totalProbeCount / count;
+    }
+
+    /**
+     * Dump contents of hash table to a file (used for debugging)
      */
     public void dumpToFile(String fileName) {
         try {
             PrintWriter out = new PrintWriter(fileName);
 
-            for (int i = 0; i < table.length; i++) {
+            for (int i = 0; i < capacity; i++) {
                 if (table[i] != null) {
                     out.println("table[" + i + "]: " + table[i]);
                 }
             }
 
             out.close();
-        } catch (Exception e) {
-            System.out.println("Error writing file");
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Error writing file: " + fileName);
         }
     }
 }
